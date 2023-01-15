@@ -1,14 +1,14 @@
 #include <SoftPWM.h>
 
 
-#define OUT1    0;
-#define OUT2    1;
-#define OUT3    2;
-#define OUT4    3;
-#define OUT5    4;
-#define OUT6    5;
-#define OUT7    18;
-#define OUT8    19;
+#define OUT1    0        // Lagerfeuer
+#define OUT2    1        // Ofen
+#define OUT3    2        // Kellerlicht
+#define OUT4    3        // Küche
+#define OUT5    4        // Stall links
+#define OUT6    5        // Stall rechts
+#define OUT7    19       // 
+#define OUT8    18       // Laterne
 
 
 SOFTPWM_DEFINE_CHANNEL(0,   DDRD, PORTD, PORTD0);  //Arduino pin 0
@@ -20,7 +20,7 @@ SOFTPWM_DEFINE_CHANNEL(5,   DDRD, PORTD, PORTD5);  //Arduino pin 5
 SOFTPWM_DEFINE_CHANNEL(18,  DDRC, PORTC, PORTC4);  //Arduino pin A4
 SOFTPWM_DEFINE_CHANNEL(19,  DDRC, PORTC, PORTC5);  //Arduino pin A5
 
-SOFTPWM_DEFINE_OBJECT(8);
+SOFTPWM_DEFINE_OBJECT(20);
 
 
 
@@ -28,7 +28,7 @@ class Flame
 {
   public:
     void setup(int pin, int alpha = 20, int delay = 100);
-    void flicker();
+    void flicker(int min, int max);
 
   private:
     int _pin;
@@ -83,14 +83,13 @@ void Light::setup(int pin, int percent)
 
 
 
-Light light1;
-Light light2;
+Flame flame1;
+Flame flame2;
 Light light3;
 Light light4;
-
-Flame flame5;
-Flame flame6;
-Flame flame7;
+Light light5;
+Light light6;
+Light light7;
 Flame flame8;
 
 
@@ -98,22 +97,20 @@ void setup()
 {
   Palatis::SoftPWM.begin(60);
 
-  light1.setup(OUT1, 25   );
-  light2.setup(OUT2, 50   );
-  light3.setup(OUT3, 75   );
-  light4.setup(OUT4, 100  );
-
-  flame5.setup(OUT5, 5,   100);
-  flame6.setup(OUT6, 10,  150);
-  flame7.setup(OUT7, 15,  200);
-  flame8.setup(OUT7, 20,  250);
+  flame1.setup(OUT1, 70,  200);
+  flame2.setup(OUT2, 70,  200);
+  light3.setup(OUT3, 50);
+  light4.setup(OUT4, 60);
+  light5.setup(OUT5, 80);
+  light6.setup(OUT6, 80);
+  light7.setup(OUT7, 80);
+  flame8.setup(OUT8, 20, 400);
 }
 
 
 void loop()
 {
-  flame5.flicker(0, 255);
-  flame6.flicker(0, 255);
-  flame7.flicker(0, 255);
-  flame8.flicker(0, 75);
+  flame1.flicker(0, 155);
+  flame2.flicker(0, 150);
+  flame8.flicker(0, 155);
 }
